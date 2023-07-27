@@ -1,0 +1,38 @@
+import speech_recognition as sr
+import subprocess
+
+def recognize_speech():
+    # Initialize the recognizer
+    recognizer = sr.Recognizer()
+
+    # Using the default system microphone as the audio source
+    with sr.Microphone() as source:
+        print("Say something...")
+        audio = recognizer.listen(source)
+
+    try:
+        # Recognize the speech using Google Web Speech API
+        recognized_text = recognizer.recognize_google(audio).lower()
+        print("You said:", recognized_text)
+
+        # Check the recognized_text and execute corresponding actions
+        if "notepad" in recognized_text:
+            subprocess.run(["notepad.exe"])
+        elif "calculator" in recognized_text:
+            subprocess.run(["calc.exe"])
+        
+        # Add more commands for other applications or actions as needed
+        else:
+            print("Command not recognized.")
+    except sr.UnknownValueError:
+        print("Sorry, could not understand audio.")
+    except sr.RequestError as e:
+        print("Error accessing Google Speech Recognition service; {0}".format(e))
+
+if __name__ == "__main__":
+    recognize_speech()
+
+
+
+
+
